@@ -2,6 +2,7 @@ package com.example.mainProject.service;
 
 import com.example.mainProject.DTO.BookingAndPassengerDTO;
 import com.example.mainProject.entity.BookingEntity;
+import com.example.mainProject.entity.FlightEntity;
 import com.example.mainProject.entity.PassengerEntity;
 import com.example.mainProject.repo.BookingRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.util.Optional;
 
 @Service
-public class BookingService {
+public class
+BookingService {
 @Autowired
 private BookingRepo bookingRepo;
 
@@ -23,6 +25,8 @@ private BookingRepo bookingRepo;
 
 @Autowired private WebClient webClient;
 public ResponseEntity<BookingEntity> saveBooking(BookingEntity b){
+    int i=b.getFlightReferenceId();
+     FlightEntity flightEntity= restTemplate.postForEntity("http://localhost:8082/updateAvailableSeats/"+i,null,FlightEntity.class).getBody();
     bookingRepo.save(b);
     return ResponseEntity.status(HttpStatus.OK).build();
 }
@@ -36,11 +40,19 @@ public ResponseEntity<BookingEntity> saveBooking(BookingEntity b){
        bookingAndPassengerDTO.setBookingStatus(bookingEntity.getBookingStatus());
        bookingAndPassengerDTO.setBookingDateTime(bookingEntity.getBookingDateTime());
        bookingAndPassengerDTO.setPassengerReferenceId(bookingEntity.getPassengerReferenceId());
+       bookingAndPassengerDTO.setFlightReferenceId(bookingEntity.getFlightReferenceId());
+       bookingAndPassengerDTO.setFirstName(bookingEntity.getFirstName());
+       bookingAndPassengerDTO.setLastName(bookingEntity.getLastName());
+       bookingAndPassengerDTO.setEmail(bookingEntity.getEmail());
+       bookingAndPassengerDTO.setPhone(bookingEntity.getPhone());
         int id1= bookingEntity.getPassengerReferenceId();
 //            ResponseEntity<PassengerEntity> response=   restTemplate.getForEntity("http://localhost:8081/showPassengerDetails/"+id1,PassengerEntity.class);
 
             PassengerEntity passengerEntity=  webClient.get().uri("http://localhost:8081/showPassengerDetails/"+id1).retrieve().bodyToMono(PassengerEntity.class).block();
         bookingAndPassengerDTO.setPassengerEntity(passengerEntity);
+       int id2=bookingEntity.getFlightReferenceId();
+        FlightEntity flightEntity= webClient.get().uri("http://localhost:8082/showflightDetails/"+id2).retrieve().bodyToMono(FlightEntity.class).block();
+          bookingAndPassengerDTO.setFlightEntity(flightEntity);
            return ResponseEntity.status(HttpStatus.OK).body(bookingAndPassengerDTO);
     }
 }

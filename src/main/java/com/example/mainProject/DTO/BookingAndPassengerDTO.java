@@ -1,5 +1,6 @@
 package com.example.mainProject.DTO;
 
+import com.example.mainProject.entity.FlightEntity;
 import com.example.mainProject.entity.PassengerEntity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -56,4 +57,61 @@ public class BookingAndPassengerDTO {
     }
 
     private PassengerEntity passengerEntity;
+    public int getFlightReferenceId() {
+        return flightReferenceId;
+    }
+
+    public void setFlightReferenceId(int flightReferenceId) {
+        this.flightReferenceId = flightReferenceId;
+    }
+
+    private int flightReferenceId;
+
+    public FlightEntity getFlightEntity() {
+        return flightEntity;
+    }
+
+    public void setFlightEntity(FlightEntity flightEntity) {
+        this.flightEntity = flightEntity;
+    }
+
+    private FlightEntity flightEntity;
+    private String firstName;
+    private String lastName;
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public int getPhone() {
+        return phone;
+    }
+
+    public void setPhone(int phone) {
+        this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    private int phone;
+
+    private String email;
 }

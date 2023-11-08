@@ -23,6 +23,7 @@ private BookingRepo bookingRepo;
 
 @Autowired private WebClient webClient;
 public ResponseEntity<BookingEntity> saveBooking(BookingEntity b){
+    b.setBookingStatus("Confirmed");
     bookingRepo.save(b);
     return ResponseEntity.status(HttpStatus.OK).build();
 }
